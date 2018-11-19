@@ -1,0 +1,54 @@
+---
+title: "diffhash - find differentially expressed hashes"
+author: "Humberto Ortiz-Zuazaga"
+date: "11/19/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Setup packages
+
+Check to see if the `BiocManager` and `polyester` packages are loadable, or install them if not.
+
+```{r setup}
+if (!requireNamespace("BiocManager"))
+    install.packages("BiocManager")
+if (!requireNamespace("polyester"))
+  BiocManager::install("polyester")
+```
+
+## Setup a small experiment
+
+### `simulate_experiment` example
+
+A FASTA file called `chr22.fa` is provided with `polyester`. This file contains sequences for 918 transcripts on chromosome 22, as annotated in hg19. For this very small example, we will only simulate from the first 20 of these transcripts.
+
+We will set the first 2 transcripts to be overexpressed in group A and the next 2 transcripts to be overexpressed in group B, each at a fold change of 3. The way to do this in Polyester is to provide a "fold change matrix": for each transcript and each group, specify a fold change. Polyester will generate baseline read numbers (assuming no differential expression), and will then multiply those mean numbers by the fold change you specify for the replicates in that group. The fold change matrix for this simple 2-group experiment looks like this:
+
+```{r fcmat}
+fold_changes = matrix(c(4,4,rep(1,18),1,1,4,4,rep(1,16)), nrow=20)
+head(fold_changes)
+```
+The matrix has two columns, since there will be two groups (cases and controls) in this experiment.
+
+The rest of the experiment can be simulated with code like the chunk below. 
+
+```{r builtinex, warning=FALSE, message=FALSE}
+library(polyester)
+library(Biostrings)
+# FASTA annotation
+fasta_file = system.file('extdata', 'chr22.fa', package='polyester')
+fasta = readDNAStringSet(fasta_file)
+# subset the FASTA file to first 20 transcripts
+small_fasta = fasta[1:20]
+writeXStringSet(small_fasta, 'chr22_small.fa')
+# ~20x coverage ----> reads per transcript = transcriptlength/readlength * 20
+# here all transcripts will have ~equal FPKM
+readspertx = round(20 * width(small_fasta) / 100)
+# simulation call:
+simulate_experiment('chr22_small.fa', reads_per_transcript=readspertx, 
+    num_reps=c(10,10), fold_changes=fold_changes, outdir='simulated_reads') 
+```
