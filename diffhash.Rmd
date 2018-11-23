@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Check to see if the `BiocManager` and `polyester` packages are loadable, or install them if not.
 
-```{r setup}
+```{r install}
 if (!requireNamespace("BiocManager"))
     install.packages("BiocManager")
 if (!requireNamespace("polyester"))
