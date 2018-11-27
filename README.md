@@ -45,7 +45,7 @@ $ wc -l hashcounts.tsv
    36745 hashcounts.tsv
 ```
 
-The result of running the .Rmd file is shown in <diffhash.md>.
+The result of running the .Rmd file is shown in [diffhash.md](diffhash.md).
 
 # References
 
