@@ -47,7 +47,40 @@ $ wc -l hashcounts.tsv
 
 The result of running the .Rmd file is shown in [diffhash.md](diffhash.md).
 
+Real differentially expressed genes:
+
+```
+$ grep "^>" ../*.fa | cut -d\| -f 2 | head -n 4
+424037187
+424037186
+209977002
+52546690
+```
+
+Filtered set of genes (out of 20):
+
+```
+$ grep "read" *.fa | cut -d\| -f 2 | sort -u
+209977002
+213512645
+29029549
+29029551
+424037186
+424037187
+52546690
+```
+
+That's 4 true positives and 3 false positives (out of 20 genes).
+
 # References
 
 1. Frazee AC, Jaffe AE, Kirchner R, Leek JT (2018). polyester: Simulate RNA-seq
 reads. R package version 1.18.0.
+
+1.   Robinson MD, McCarthy DJ and Smyth GK (2010). edgeR: a Bioconductor
+  package for differential expression analysis of digital gene expression
+  data. Bioinformatics 26, 139-140
+
+1.  McCarthy DJ, Chen Y and Smyth GK (2012). Differential expression analysis
+  of multifactor RNA-Seq experiments with respect to biological variation.
+  Nucleic Acids Research 40, 4288-4297
