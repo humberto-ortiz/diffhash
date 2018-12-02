@@ -47,6 +47,31 @@ $ wc -l hashcounts.tsv
 
 The result of running the .Rmd file is shown in [diffhash.md](diffhash.md).
 
+## Filtering reads
+
+We can include a read if any of it's kmers are differentially expressed or if
+all of it's kmers are differentially expressed:
+
+any:
+```
+$ du -sh simulated_reads any
+106M	simulated_reads
+ 48M	any
+```
+
+all:
+```
+$ du -sh simulated_reads filtered
+106M	simulated_reads
+ 15M	filtered
+```
+
+## Differentially expressed kmers
+
+Using "any" results in more false positives at this stage. All 20 of the
+simulated genes have at least one read with a differentially expressed kmer.
+
+
 Real differentially expressed genes:
 
 ```
