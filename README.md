@@ -97,6 +97,28 @@ $ grep "read" *.fa | cut -d\| -f 2 | sort -u
 
 That's 4 true positives and 3 false positives (out of 20 genes).
 
+# "Assembling"
+
+Use `bcalm` to build unitigs.
+
+```
+$ ls -1 filtered/sample_* > list_reads
+$ bcalm -in list_reads -kmer-size 21 -abundance-min 2
+```
+
+produces a bunch of  `list_reads*` files.
+
+```
+$ ~/src/spacegraphcats/bcalm/scripts/convertToGFA.py list_reads.unitigs.fa test.gfa 21
+```
+Bandage can read GFA and blast fragments against `chr22_small.fa`.
+
+The 4 differentially expressed genes are the three structures on the left of the
+figure below, and the two small fragments on the right are small pieces of false
+positive genes.
+
+![Bandage graph of fragments](test.png)
+
 # References
 
 1. Frazee AC, Jaffe AE, Kirchner R, Leek JT (2018). polyester: Simulate RNA-seq
@@ -109,3 +131,10 @@ reads. R package version 1.18.0.
 1.  McCarthy DJ, Chen Y and Smyth GK (2012). Differential expression analysis
   of multifactor RNA-Seq experiments with respect to biological variation.
   Nucleic Acids Research 40, 4288-4297
+
+1. Chikhi, Rayan, Antoine Limasset, and Paul Medvedev. "Compacting de Bruijn
+   graphs from sequencing data quickly and in low memory." Bioinformatics 32.12
+   (2016): i201-i208.
+
+1. Wick R.R., Schultz M.B., Zobel J. & Holt K.E. (2015). Bandage: interactive
+   visualisation of de novo genome assemblies. Bioinformatics, 31(20), 3350-3352.
