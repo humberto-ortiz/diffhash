@@ -97,7 +97,7 @@ $ grep "read" *.fa | cut -d\| -f 2 | sort -u
 
 That's 4 true positives and 3 false positives (out of 20 genes).
 
-# "Assembling"
+## "Assembling"
 
 Use `bcalm` to build unitigs.
 
