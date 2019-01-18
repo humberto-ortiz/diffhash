@@ -11,7 +11,8 @@ function filter_fasta(inname, outname, kmers)
         eachkmer = [kmer for (_, kmer) in each(DNAKmer{13}, sequence(record))]
         canks = [convert(String, canonical(kmer)) for kmer in eachkmer]
         # use any or all to select reads that pass
-        if (any(cank -> haskey(kmers, cank), canks))
+	# Anonymous function to check if all kmers are present
+        if (all(cank -> haskey(kmers, cank), canks))
             write(writer, record)
         end
     end
